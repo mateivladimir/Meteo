@@ -1,14 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.mta.se.lab.controller.VremeController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane prefHeight="400.0" prefWidth="416.0">
-         <children>
-            <Button fx:id="button1" layoutX="102.0" layoutY="62.0" mnemonicParsing="false" onMouseClicked="#buttonHandler" text="Salut" />
-         </children>
+      <Pane prefHeight="400.0" prefWidth="600.0">
+         <ComboBox fx:id="countryComboBox" layoutX="59.0" layoutY="79.0" onAction="#whenCountryComboBoxIsSelected" prefWidth="150.0" />
+         <ComboBox fx:id="cityComboBox" layoutX="369.0" layoutY="79.0" onAction="#whenCityComboBoxIsSelected" prefWidth="150.0" />
+         <Label layoutX="59.0" layoutY="41.0" prefHeight="25.0" prefWidth="150.0" text="Country" textFill="#745b5b">
+            <font>
+               <Font name="Bookman Old Style Bold" size="20.0" />
+            </font>
+         </Label>
+         <Label layoutX="369.0" layoutY="41.0" prefHeight="25.0" prefWidth="150.0" text="City" textFill="#745b5b">
+            <font>
+               <Font name="Bookman Old Style Bold" size="20.0" />
+            </font>
+         </Label>
+         <Label fx:id="cityLabel" layoutX="59.0" layoutY="142.0" prefHeight="45.0" prefWidth="204.0" text="Bucharest" textFill="#745b5b">
+            <font>
+               <Font size="30.0" />
+            </font></Label>
+         <Label fx:id="timeLabel" layoutX="59.0" layoutY="181.0" prefHeight="39.0" prefWidth="150.0" text="Tuesday 8:00 PM" textFill="#745b5b" />
+         <Label fx:id="typeWeatherLabel" layoutX="59.0" layoutY="220.0" prefHeight="39.0" prefWidth="150.0" text="Light Rain Showers" textFill="#745b5b" />
+         <ImageView fitHeight="88.0" fitWidth="117.0" layoutX="444.0" layoutY="176.0" pickOnBounds="true" preserveRatio="true" />
+         <Label fx:id="tempLabel" alignment="CENTER" layoutX="311.0" layoutY="176.0" prefHeight="88.0" prefWidth="117.0" textFill="#e83131">
+            <font>
+               <Font name="Arial" size="60.0" />
+            </font></Label>
+         <Label fx:id="humidityLabel" layoutX="444.0" layoutY="305.0" prefHeight="25.0" prefWidth="106.0" text="Humidity : " />
+         <Label fx:id="windLabel" layoutX="444.0" layoutY="344.0" prefHeight="25.0" prefWidth="106.0" text="Wind : " />
       </Pane>
    </children>
 </AnchorPane>

@@ -1,26 +1,36 @@
 package ro.mta.se.lab;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ro.mta.se.lab.controller.VremeaController;
+import ro.mta.se.lab.model.CityFromFile;
+
 import java.io.IOException;
-import java.net.URL;
 
 
 public class Main extends Application {
+
+    private ObservableList<CityFromFile> allCities = FXCollections.observableArrayList();
     public static void main(String[] args)
     {
         launch(args);
     }
 
     public void start(Stage primaryStage) {
-        FXMLLoader loader = new FXMLLoader();
+        Init x = new Init();
+        allCities = x.getAllInfoFromFile();
 
+        FXMLLoader loader = new FXMLLoader();
         try {
             loader.setLocation(this.getClass().getResource("/view/VremeaView.fxml"));
+            loader.setController(new VremeaController(allCities));
             primaryStage.setScene(new Scene(loader.load()));
             primaryStage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
