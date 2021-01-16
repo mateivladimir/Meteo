@@ -9,18 +9,25 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.json.simple.*;
 
 import org.json.simple.parser.JSONParser;
 import ro.mta.se.lab.Init;
 import ro.mta.se.lab.model.CityFromFile;
 import ro.mta.se.lab.model.CityFromJson;
+
+import javax.xml.crypto.Data;
 
 public class VremeaController implements Initializable {
     @FXML private ComboBox<String> countryComboBox;
@@ -31,6 +38,9 @@ public class VremeaController implements Initializable {
     @FXML private Label typeWeatherLabel;
     @FXML private Label humidityLabel;
     @FXML private Label windLabel;
+    @FXML private ImageView imageImageView;
+    @FXML private Label descLabel;
+    @FXML private Label cloudLabel;
 
     private ObservableList<CityFromFile> allCities = FXCollections.observableArrayList();
 
@@ -75,10 +85,25 @@ public class VremeaController implements Initializable {
         CityFromJson cityParse = new CityFromJson(jo);
 
         this.cityLabel.setText(cityParse.getName());
-        this.tempLabel.setText(Double.toString(cityParse.getTemp()));
+        this.tempLabel.setText(Double.toString(cityParse.getTemp())+ "°C");
         this.typeWeatherLabel.setText(cityParse.getDescription());
         this.humidityLabel.setText(cityParse.getHumidity());
-        this.timeLabel.setText(cityParse.getTime());
+        //this.timeLabel.setText(cityParse.getTime());
         this.windLabel.setText(cityParse.getWindSpeed());
+        this.imageImageView.setImage(new Image("https://openweathermap.org/img/wn/"+ cityParse.getImg()+"@2x.png"));
+        this.descLabel.setText(cityParse.getDescLabel());
+        this.cloudLabel.setText(cityParse.getCloudsPI());
+
+
+       /*DateFormat format = new SimpleDateFormat("HHmm");
+        Date date = format.parse(cityParse.getDateTime());
+        this.timeLabel.setText(date.toString());*/
+
+        long data = Long.parseLong(cityParse.getDateTime()) * 1000L;
+        Date finalData = new Date(data);
+        String sunrise = new SimpleDateFormat("E,hh:mm").format(finalData);
+        System.out.println(sunrise);
+
+
     }
 }

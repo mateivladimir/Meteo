@@ -18,6 +18,10 @@ public class CityFromJson {
     private String description;
     private String humidity;
     private String windSpeed;
+    private String img;
+    private String descLabel;
+    private String cloudsPI;
+    private String dateTime;
 
     public CityFromJson(JSONObject jsonObject) {
         this.jsonObject = jsonObject;
@@ -32,10 +36,19 @@ public class CityFromJson {
         JSONArray weather = (JSONArray) jsonObject.get("weather");
         JSONObject weatherobj = (JSONObject) weather.get(0);
         this.description = (String) weatherobj.get("main");
+        this.descLabel = (String) weatherobj.get("description");
+        this.img = (String) weatherobj.get("icon");
 
         JSONObject wind = (JSONObject) jsonObject.get("wind");
         var ws = wind.get("speed");
         this.windSpeed = ws.toString();
+
+        JSONObject cld = (JSONObject) jsonObject.get("clouds");
+        var clouds =  cld.get("all");
+        this.cloudsPI = clouds.toString();
+
+        var data= jsonObject.get("dt");
+        this.dateTime = data.toString();
 
 
     }
@@ -45,7 +58,7 @@ public class CityFromJson {
     }
 
     public double getTemp() {
-        return temp;
+        return (int) (temp - 273.15);
     }
 
     public String getDescription() {
@@ -65,5 +78,21 @@ public class CityFromJson {
 
     public String getWindSpeed() {
         return "Wind speed : " + windSpeed + " km/h";
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public String getDescLabel() {
+        return descLabel;
+    }
+
+    public String getCloudsPI() {
+        return "Clouds : " +cloudsPI + " %";
+    }
+
+    public String getDateTime() {
+        return dateTime;
     }
 }
