@@ -41,6 +41,9 @@ public class VremeaController implements Initializable {
     @FXML private ImageView imageImageView;
     @FXML private Label descLabel;
     @FXML private Label cloudLabel;
+    @FXML private Label sunsetLabel;
+    @FXML private Label sunriseLabel;
+    @FXML private Label minMaxLabel;
 
     private ObservableList<CityFromFile> allCities = FXCollections.observableArrayList();
 
@@ -59,7 +62,9 @@ public class VremeaController implements Initializable {
     }
 
     public void whenCountryComboBoxIsSelected(){
-        cityComboBox.getItems().clear();
+        if (!cityComboBox.getItems().isEmpty())
+            cityComboBox.getItems().clear();
+
         String x = countryComboBox.getValue();
         ArrayList <String> allCityFromOneCountry = new ArrayList<>();
         for (CityFromFile city : allCities){
@@ -84,25 +89,18 @@ public class VremeaController implements Initializable {
 
         CityFromJson cityParse = new CityFromJson(jo);
 
-        this.cityLabel.setText(cityParse.getName());
+
         this.tempLabel.setText(Double.toString(cityParse.getTemp())+ "°C");
         this.typeWeatherLabel.setText(cityParse.getDescription());
         this.humidityLabel.setText(cityParse.getHumidity());
-        //this.timeLabel.setText(cityParse.getTime());
         this.windLabel.setText(cityParse.getWindSpeed());
         this.imageImageView.setImage(new Image("https://openweathermap.org/img/wn/"+ cityParse.getImg()+"@2x.png"));
         this.descLabel.setText(cityParse.getDescLabel());
         this.cloudLabel.setText(cityParse.getCloudsPI());
-
-
-       /*DateFormat format = new SimpleDateFormat("HHmm");
-        Date date = format.parse(cityParse.getDateTime());
-        this.timeLabel.setText(date.toString());*/
-
-        long data = Long.parseLong(cityParse.getDateTime()) * 1000L;
-        Date finalData = new Date(data);
-        String sunrise = new SimpleDateFormat("E,hh:mm").format(finalData);
-        System.out.println(sunrise);
+        this.timeLabel.setText(cityParse.getDateTime());
+        this.sunriseLabel.setText(cityParse.getSunriseTime());
+        this.sunsetLabel.setText(cityParse.getSunsetTime());
+        this.minMaxLabel.setText(cityParse.getMinMax());
 
 
     }

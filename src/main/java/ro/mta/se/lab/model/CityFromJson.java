@@ -3,6 +3,7 @@ package ro.mta.se.lab.model;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -22,6 +23,9 @@ public class CityFromJson {
     private String descLabel;
     private String cloudsPI;
     private String dateTime;
+    private String sunriseTime;
+    private String sunsetTime;
+    private String minMax;
 
     public CityFromJson(JSONObject jsonObject) {
         this.jsonObject = jsonObject;
@@ -31,6 +35,11 @@ public class CityFromJson {
         this.temp = (double) mainJSON.get("temp");
         var x = mainJSON.get("humidity");
         this.humidity = x.toString();
+        double min = (double) mainJSON.get("temp_min");
+        min = (int) (min-273.15);
+        double max = (double) mainJSON.get("temp_max");
+        max = (int) (max-273.15);
+        this.minMax = min + " °C/ " + max + " °C";
 
 
         JSONArray weather = (JSONArray) jsonObject.get("weather");
@@ -48,7 +57,26 @@ public class CityFromJson {
         this.cloudsPI = clouds.toString();
 
         var data= jsonObject.get("dt");
-        this.dateTime = data.toString();
+        String dateTime = data.toString();
+
+        long time = Long.parseLong(dateTime) * 1000L;
+        Date finalData = new Date(time);
+        this.dateTime = new SimpleDateFormat("E,HH:mm").format(finalData);
+
+        JSONObject sys = (JSONObject) jsonObject.get("sys");
+        var sr = sys.get("sunrise");
+        var ss = sys.get("sunset");
+
+        String dateTime2 = sr.toString();
+        String dateTime3 = ss.toString();
+        long time2 = Long.parseLong(dateTime2) * 1000L;
+        long time3 = Long.parseLong(dateTime3) * 1000L;
+        Date finalData2 = new Date(time2);
+        Date finalData3 = new Date(time3);
+
+        this.sunriseTime = new SimpleDateFormat("HH:mm").format(finalData2);
+        this.sunsetTime = new SimpleDateFormat("HH:mm").format(finalData3);
+
 
 
     }
@@ -66,7 +94,7 @@ public class CityFromJson {
     }
 
     public String getHumidity() {
-        return "humidity : " + this.humidity + " % ";
+        return "Humidity : " + this.humidity + " % ";
     }
     public String getTime(){
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
@@ -93,6 +121,18 @@ public class CityFromJson {
     }
 
     public String getDateTime() {
-        return dateTime;
+        return "Time of data calculation : " + dateTime;
+    }
+
+    public String getSunriseTime() {
+        return "Sunrise : " + sunriseTime;
+    }
+
+    public String getSunsetTime() {
+        return "Sunset : " + sunsetTime;
+    }
+
+    public String getMinMax() {
+        return minMax;
     }
 }
