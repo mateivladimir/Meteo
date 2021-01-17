@@ -20,3 +20,4 @@ ID              nm              lat		    lon		    countryCode
 3117735         Madrid          40.4165     -3.7026     ES
 3173435         Milan           45.4643     9.1895      IT
 3170647         Pisa            43.7155     10.3966     IT
+3172394		Naples		40.8333	    14.25	IT

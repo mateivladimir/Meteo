@@ -35,7 +35,7 @@ public class VremeaControllerTest {
     public void setUp() throws Exception {
         cityFromFile = new CityFromFile("246214", "London", 51.5085, 0.1257, "GB");
         cityFromFile = mock(CityFromFile.class);
-        when(cityFromFile.getCountryCity()).thenReturn("RO");
+        when(cityFromFile.getCountryCity()).thenReturn("IT");
     }
 
     /**
