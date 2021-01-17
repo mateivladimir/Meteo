@@ -11,7 +11,13 @@ import ro.mta.se.lab.model.CityFromFile;
 
 import java.io.IOException;
 
-
+/**
+ * Clasa Main va incepe rularea aplicatiei. Aceasta va creea mai intai obiectul de tip
+ * ObservableList cu toate informatiile din fisier, dupa care va incepe rularea interfetei
+ * grafice.
+ *
+ * @author MateiMunteanu
+ */
 public class Main extends Application {
 
     private ObservableList<CityFromFile> allCities = FXCollections.observableArrayList();

@@ -24,11 +24,18 @@ import org.json.simple.*;
 
 import org.json.simple.parser.JSONParser;
 import ro.mta.se.lab.Init;
+import ro.mta.se.lab.Log;
 import ro.mta.se.lab.model.CityFromFile;
 import ro.mta.se.lab.model.CityFromJson;
 
 import javax.xml.crypto.Data;
 
+/**
+ *
+ * Clasa care face legatura intre cod si interfata grafica.
+ *
+ *  @author MateiMunteanu
+ */
 public class VremeaController implements Initializable {
     @FXML private ComboBox<String> countryComboBox;
     @FXML private Label cityLabel;
@@ -47,10 +54,23 @@ public class VremeaController implements Initializable {
 
     private ObservableList<CityFromFile> allCities = FXCollections.observableArrayList();
 
+    /**
+     * Constructor implicit pentru a putea salva toate orasele citite din fisier intr-o variabila
+     * la care sa avem acces ori de cate ori este nevoie in cadrul acestei clase.
+     * @param allCities
+     */
     public VremeaController(ObservableList<CityFromFile> allCities) {
         this.allCities = allCities;
     }
 
+    /**
+     * Functie ce se va rula la inceputul aplicatiei. Aceasta va face o lista de tari
+     * citite din fisier, dupa care va aplica metoda distinct() care va returna toate
+     * obiectele unice din interiorul acelui ArrayList. La final, vom adauga tooate
+     * stringurile in FXML-ul countryComboBox, pentru a fi disponibile utilizatorului.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         ArrayList<String> allCountry = new ArrayList<>();
@@ -61,9 +81,16 @@ public class VremeaController implements Initializable {
             countryComboBox.getItems().add(cnt);
     }
 
-    public void whenCountryComboBoxIsSelected(){
-        if (!cityComboBox.getItems().isEmpty())
-            cityComboBox.getItems().clear();
+    /**
+     * Metoda ce se va apela dupa ce utilizatorul va selecta o tara. Precum conceptului prezentat mai sus,
+     * aceasta functie va salva tara selectata intr-un buffer, dupa care va lua un ArrayList in care va salva
+     * toate orasele care se afla in tara respectiva. La final, vom adauga aceasta lista intr-un comboBox care va
+     * fi disponibil utilizatorului.
+     */
+
+    public void whenCountryComboBoxIsSelected() throws Exception {
+        cityComboBox.getItems().clear();
+        cityComboBox.getSelectionModel().clearSelection();
 
         String x = countryComboBox.getValue();
         ArrayList <String> allCityFromOneCountry = new ArrayList<>();
@@ -77,19 +104,27 @@ public class VremeaController implements Initializable {
     }
 
 
+    /**
+     * Metoda ce se va apela dupa ce utilizatorul va selecta si orasul pe care il doreste.
+     * Aceasta va trimite un httpRequest catre openweathermap.org cu numele orasului si va face
+     * legatura intre interfata si elementele gasite in json.
+     *
+     * @throws Exception
+     */
 
     public void whenCityComboBoxIsSelected() throws Exception {
+        if (countryComboBox.getValue()==null || cityComboBox.getValue()==null)
+            return;
         String jsonString;
         Init initHttpRequest = new Init();
         jsonString = initHttpRequest.doHttpRequest(cityComboBox.getValue());
-
+        if(jsonString == null)
+            return;
 
         Object obj = new JSONParser().parse(jsonString);
         JSONObject jo = (JSONObject) obj;
 
         CityFromJson cityParse = new CityFromJson(jo);
-
-
         this.tempLabel.setText(Double.toString(cityParse.getTemp())+ "°C");
         this.typeWeatherLabel.setText(cityParse.getDescription());
         this.humidityLabel.setText(cityParse.getHumidity());
@@ -102,6 +137,10 @@ public class VremeaController implements Initializable {
         this.sunsetLabel.setText(cityParse.getSunsetTime());
         this.minMaxLabel.setText(cityParse.getMinMax());
 
+        Log.getInstance().writeToFile("Accesare vreme orasul : " + cityComboBox.getValue());
+
 
     }
+
+
 }
